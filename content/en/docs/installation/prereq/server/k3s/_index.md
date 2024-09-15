@@ -33,10 +33,11 @@ prerequisites](#../../../prereq/index.adoc), most notably:
 
 Then you can use the following subcommand to install in the server:
 
-    ops cloud k3s create SERVER=<server> USERNAME=<username>
+    ops cloud k3s create <server> [<username>]
 
 where `<server>` is the **IP address or DNS name** to access the server,
-and `<username>` is the user you use to access the server.
+and the optional `<username>` is the user you use to access the server:
+if <username> is not specified, the `root` username will be used.
 
 Those pieces of information should have been provided when provisioning
 the server.
@@ -55,12 +56,12 @@ can proceed to installing it without any other step involved.
 
 In addition to `create` the following subcommands are also available:
 
-- `ops cloud k3s delete SERVER=<server> USERNAME=<username>`:
+- `ops cloud k3s delete <server> [<username>]`:
     uninstall K3S from the server
 
-- `ops cloud k3s kubeconfig SERVER=<server> USERNAME=<username>`:
+- `ops cloud k3s kubeconfig <server> [<username>]`:
     retrieve the kubeconfig from the K3S server
 
 - `ops cloud k3s info`: some information about the server
 
-- `ops cloud k3s status`: status of the server
+- `ops cloud k3s status <server> [<username>]`: status of the server
