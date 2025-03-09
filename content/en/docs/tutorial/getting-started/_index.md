@@ -5,13 +5,6 @@ weight: 10
 draft: false
 ---
 
-{{< blockquote warning>}}
-<strong>This page is under review.</strong><br/>
-<br/>
-Several changes have been made to the project since its first draft and therefore the
-tutorial needs to be updated to the publishing system.
-{{< /blockquote >}}
-
 ## Getting started
 
 ### Build a sample Application
@@ -50,9 +43,9 @@ come back here!
 
 ### Enabling Services
 
-After installing OpenServerless on a local machine with Docker or on a 
-supported cloud, you can enable or disable the services offered by the platform. 
-As we will use Postgres database, the Static content with the Minio S3 compatible 
+After installing OpenServerless on a local machine with Docker or on a
+supported cloud, you can enable or disable the services offered by the platform.
+As we will use Postgres database, the Static content with the Minio S3 compatible
 storage and a cron scheduler, let’s run in the terminal:
 
 ```bash
@@ -68,6 +61,71 @@ ops update apply
 
 And with just that (when it finishes), we have everything we need ready
 to use!
+
+{{< blockquote info>}}
+If you've installed the local development environment using the instructions from
+the [Docker installation page](/docs/installation/install/docker/) you've already
+the base services enabled by default.
+{{< /blockquote >}}
+
+You can check what services are enabled with the command:
+
+```bash
+ops config status
+```
+
+This should be the output:
+
+```
+OPERATOR_COMPONENT_MINIO=true
+OPERATOR_COMPONENT_MONGODB=true
+OPERATOR_COMPONENT_POSTGRES=true
+OPERATOR_COMPONENT_STATIC=true
+OPERATOR_COMPONENT_CRON=true
+OPERATOR_COMPONENT_REDIS=true
+```
+
+### Create a user
+
+If you don't have a user, it's the time to create one. We we'll use it to work on this tutorial.
+To create a user, we need to be the administrator, like described in [this section](/docs/cli/admin/).
+
+```bash
+ops admin adduser opstutorial <youremail> SimplePassword --all 
+```
+
+The output will be:
+
+```
+Generated OPSTUTORIAL user secrets.
+Creating user opstutorial...
+whiskuser.nuvolaris.org/opstutorial created
+```
+
+### Login as user
+
+After user creation, it's time to perform ops login.
+
+{{< blockquote info>}}
+The `ops -login` command will log you in on the server and dump the proper configuration of
+active services for your user. The configuration is automatically used by `ops` for all the tasks.
+You only need to run `ops -login` once (unless you need to log in to another OpenServerless server or with another
+OpenServerless user).
+{{< /blockquote >}}
+
+Change your APIHOST accordly, if you've specified a custom one during the system setup
+
+```bash
+OPS_USER="opstutorial" OPS_PASSWORD="SimplePassword" ops -login http://localhost:80
+```
+
+```
+Logging in http://localhost:80 as opstutorial
+Successfully logged in as opstutorial.
+ok: whisk auth set. Run 'wsk property get --auth' to see the new value.
+ok: whisk API host set to http://localhost:80
+OpenServerless host and auth set successfully. You are now ready to use ops!
+```
 
 ### Cleaning Up
 
