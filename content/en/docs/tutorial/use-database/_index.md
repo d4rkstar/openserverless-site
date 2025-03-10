@@ -31,6 +31,8 @@ contact_us_app
 Put this content inside the `create-table.js` file:
 
 ```javascript
+// create-table.js
+
 //--kind nodejs:default
 
 const { Client } = require('pg')
@@ -80,16 +82,6 @@ async function main(args) {
 }
 ```
 
-{{< blockquote info>}}
-As in the form validation page, you may have noticed also here the comments at 
-the beginning of the file. Here we have some news:
-In particular:
-<ul>
-<li>`--param POSTGRES_URL $POSTGRES_URL` will pass the param POSTGRES_URL to the action.</li>
-</ul>
-The parameters are retrieved from the `ops config` downloaded at the time of the login.
-{{< /blockquote >}}
-
 We just need to run this once, therefore it doesn’t need to be a web action. Here 
 we can take advantage of the `cron`  service we enabled! There are also a couple of 
 console logs that we can check out.
@@ -120,8 +112,7 @@ postgresql://opstutorial:<password>@nuvolaris-postgres.nuvolaris.svc.cluster.loc
 Take the value after the `=` sign and use it to export the POSTGRES_URL variable in the shell: 
 
 ```bash
-export POSTGRES_URL=<postgresurl>
-ops action create contact/create-table packages/contact/create-table.js -a autoexec true --param POSTGRES_URL $POSTGRES_URL
+ops action create contact/create-table packages/contact/create-table.js -a autoexec true --param POSTGRES_URL <PUT THE POSTGRES_URL HERE>
 ```
 
 In OpenServerless an action invocation is called an `activation`. You
@@ -194,6 +185,10 @@ Let’s create a new file called `write.js` in the `packages/contact`
 folder:
 
 ```javascript
+// write.js
+
+//--kind nodejs:default
+//--param POSTGRES_URL $POSTGRES_URL
 const {Client} = require('pg')
 
 async function main(args) {
@@ -226,6 +221,19 @@ async function main(args) {
     };
 }
 ```
+
+{{< blockquote info>}}
+You may have noticed here again the comments on top of the file. As said before,
+these comments are used by `ops ide` to automatically handle the publishing of files
+by calling `ops package` or `ops action` as needed.
+In particular:
+<ul>
+<li><code>--kind nodejs:default</code> will ask OpenServerless to run this code on the nodejs default runtime.</li>
+<li>the <code>--param POSTGRES_URL $POSTGRES_URL</code> will automatically fill in the parameters required by the action,
+taking it's value from <code>ops</code>'s configuration file.</li>
+</ul>
+{{< /blockquote >}}
+
 
 Very similar to the create table action, but this time we are inserting
 data into the table by passing the values as parameters. There is also a
@@ -350,7 +358,10 @@ For instance, let’s run:
 
 ```bash
 ops devel psql sql "SELECT * FROM demo.CONTACTS"
+```
 
+You should see an output like this:
+```shell
 [{'id': 1, 'name': 'OpenServerless', 'email': 'info@nuvolaris.io', 'phone': '5551233210', 'message': 'This is awesome!'}]
 ```
 

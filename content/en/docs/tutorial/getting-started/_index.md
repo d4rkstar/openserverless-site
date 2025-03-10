@@ -21,6 +21,8 @@ services which are already part of a OpenServerless deployment and
 develop a contact form page for users to fill it with their emails and
 messages, which are then sent via email to us and stored in a database.
 
+Finally, we'll se how to activate external services using [Web hooks](https://en.wikipedia.org/wiki/Webhook).
+
 ### Openserverless CLI: Ops
 
 Serverless development is mostly performed on the CLI, and

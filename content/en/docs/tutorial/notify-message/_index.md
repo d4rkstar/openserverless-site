@@ -32,7 +32,7 @@ folder):
 
 ```javascript
 // notify.js
-// notify.js
+
 function main(args) {
     const { name, email, phone, message } = args;
 
@@ -72,6 +72,11 @@ function main(args) {
         });
 }
 ```
+
+{{< blockquote info>}}
+In this case, we don't need to annotate the action as web. This because this action will
+be invoked in a sequence: so it's an internal action and is not exposed as an api.
+{{< /blockquote >}}
 
 This action has the `args.notifications` parameter, which is the
 webhook. It also has the usual 4 form fields parameters that receives in

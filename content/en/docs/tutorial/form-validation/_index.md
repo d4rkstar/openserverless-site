@@ -50,8 +50,8 @@ comments are used by `ops ide` to automatically handle the publishing of files
 by calling `ops package` or `ops action` as needed.
 In particular:
 <ul>
-<li>the `--web true` will enable this as a [web action](docs/reference/entities/webactions/);</li>
-<li>`--kind nodejs:default` will ask OpenServerless to run this code on the nodejs default runtime.</li>
+<li>the <code>--web true</code> will enable this as a [web action](docs/reference/entities/webactions/);</li>
+<li><code>--kind nodejs:default</code> will ask OpenServerless to run this code on the nodejs default runtime.</li>
 </ul>
 {{< /blockquote >}}
 
