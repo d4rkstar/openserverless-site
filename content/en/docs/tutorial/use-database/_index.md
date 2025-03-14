@@ -357,12 +357,16 @@ with the integrated services, such as the database we are using.
 For instance, let’s run:
 
 ```bash
-ops devel psql sql "SELECT * FROM demo.CONTACTS"
+ops devel psql sql "SELECT * FROM demo.CONTACTS" --format=table
 ```
 
 You should see an output like this:
 ```shell
-[{'id': 1, 'name': 'OpenServerless', 'email': 'info@nuvolaris.io', 'phone': '5551233210', 'message': 'This is awesome!'}]
+┌───┬────┬────────────────┬─────────────────────────┬─────────────┬──────────────────────────────┐
+│   │ id │ name           │ email                   │ phone       │ message                      │
+├───┼────┼────────────────┼─────────────────────────┼─────────────┼──────────────────────────────┤
+│ 0 │ 1  │ OpenServerless │ user@openserverless.dev │ 39123123123 │ Hello Apache OpenServerless! │
+└───┴────┴────────────────┴─────────────────────────┴─────────────┴──────────────────────────────┘
 ```
 
 ---
