@@ -87,10 +87,13 @@ OPERATOR_COMPONENT_CRON=true
 OPERATOR_COMPONENT_REDIS=true
 ```
 
-### Create a user
+### Create a user 
 
 If you don't have a user, it's the time to create one. We we'll use it to work on this tutorial.
+
+{{< blockquote warning>}}
 To create a user, we need to be the administrator, like described in [this section](/docs/cli/admin/).
+{{< /blockquote >}}
 
 ```bash
 ops admin adduser opstutorial <youremail> SimplePassword --all 
@@ -109,20 +112,23 @@ whiskuser.nuvolaris.org/opstutorial created
 After user creation, it's time to perform ops login.
 
 {{< blockquote info>}}
-The `ops -login` command will log you in on the server and dump the proper configuration of
+The `ops ide login` command will log you in on the server and dump the proper configuration of
 active services for your user. The configuration is automatically used by `ops` for all the tasks.
-You only need to run `ops -login` once (unless you need to log in to another OpenServerless server or with another
+You only need to run `ops ide login` once (unless you need to log in to another OpenServerless server or with another
 OpenServerless user).
 {{< /blockquote >}}
 
 Change your APIHOST accordly, if you've specified a custom one during the system setup
 
 ```bash
-OPS_USER="opstutorial" OPS_PASSWORD="SimplePassword" ops -login http://localhost:80
+ops ide login opstutorial http://localhost:80                                                                                            (⎈|kind-nuvolaris:default)
 ```
 
 ```
+*** Configuring Access to OpenServerless ***
+apihost=http://localhost:80 username=opstutorial
 Logging in http://localhost:80 as opstutorial
+Enter Password: 
 Successfully logged in as opstutorial.
 ok: whisk auth set. Run 'wsk property get --auth' to see the new value.
 ok: whisk API host set to http://localhost:80

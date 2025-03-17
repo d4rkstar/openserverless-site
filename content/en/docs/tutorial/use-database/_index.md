@@ -31,9 +31,8 @@ contact_us_app
 Put this content inside the `create-table.js` file:
 
 ```javascript
-// create-table.js
-
 //--kind nodejs:default
+//--param POSTGRES_URL $POSTGRES_URL
 
 const { Client } = require('pg')
 

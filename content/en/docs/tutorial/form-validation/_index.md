@@ -5,12 +5,16 @@ weight: 30
 draft: false
 ---
 
+### The Contact Package
+
+The contact form we just uploaded does not do anything. To make it work
+let’s start to fill our `package` directory with backend actions.
+
 ## Form validation
 
-Now that we have a contact form and a package for our actions, we have
-to handle the submission. We can do that by adding a new action that
-will be called when the form is submitted. Let’s create a `submit.js`
-file in our `packages/contact` folder.
+We well start to handle the form submission. We can do that by 
+adding a new action that will be called when the form is submitted. 
+Let’s create a `submit.js` file inside our `packages/contact` folder.
 
 You directory structure should looks like this:
 
@@ -46,8 +50,8 @@ return the result.
 
 {{< blockquote info>}}
 You may have noticed the strange comments at the beginning of the file. Those 
-comments are used by `ops ide` to automatically handle the publishing of files 
-by calling `ops package` or `ops action` as needed.
+comments are used by <code>ops ide</code> to automatically handle the publishing of files 
+by calling <code>ops package</code> or <code>ops action</code> as needed.
 In particular:
 <ul>
 <li>the <code>--web true</code> will enable this as a [web action](docs/reference/entities/webactions/);</li>
