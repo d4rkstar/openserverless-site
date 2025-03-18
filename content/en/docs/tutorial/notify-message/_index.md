@@ -9,29 +9,48 @@ draft: false
 
 ### Contact notification
 
-It would be great if we receive a notification when an user tries to
-contact us. For this tutorial we will pick slack to receive a message
-when it happens.
+It would be great if we receive a notification when a user tries to
+contact us. 
 
 For this tutorial we will use a free service that instantly generates 
 a unique URL through which you can receive and view webhook payloads in 
 real time.
-You could replace this service with a workflow automation system or with 
-your CRM webbook.
+
+{{< blockquote info>}}
+You could replace this service with a workflow automation system, with
+your CRM webhook, with Slack hooks etc.
+{{< /blockquote >}}
 
 By navigating to the site https://webhook.site/ you will receive a unique 
 url, as in the image below:
 
 ![Webhook.site](/docs/tutorial/images/webhook_site.webp)
 
-Take the url under the "Your unique URL" title.
+Take note of the url under the "Your unique URL" title.
 
-Once we have a webhook we can use to send messages we can proceed to
-create a new action called `notify.js` (in the `packages/contact`
-folder):
+Once we have a webhook we can proceed to create a new action called `notify.js` 
+(in the `packages/contact` folder).
+
+The directory structure will be:
+
+```
+contact_us_app
+├── packages
+│   └── contact
+│       ├── create-table.js
+│       ├── notify.js
+│       ├── submit.js
+│       └── write.js
+└── web
+└── index.html
+```
+
+Place this content inside the `notify.js` file:
 
 ```javascript
 // notify.js
+
+//--param NOTIFICATION_URL $NOTIFICATION_URL
 
 function main(args) {
     const { name, email, phone, message } = args;
@@ -47,7 +66,7 @@ function main(args) {
 
     console.log("Built message", payload);
 
-    return fetch(args.notifications, {
+    return fetch(args.NOTIFICATION_URL, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -78,30 +97,48 @@ In this case, we don't need to annotate the action as web. This because this act
 be invoked in a sequence: so it's an internal action and is not exposed as an api.
 {{< /blockquote >}}
 
-This action has the `args.notifications` parameter, which is the
+This action has the `args.NOTIFICATION_URL` parameter, which is the
 webhook. It also has the usual 4 form fields parameters that receives in
 input, used to build the text of the message. The action will return the
 body of the response from the webhook.
 
-We’ve also put some logs that we can use for debugging purposes.
+The `NOTIFICATION_URL` may contains different values between a development environment
+and a production one.
+No problem! Apache OpenServerless deployer supports .env file.
+Create a `.env` file under the `package` directory.
 
-Let’s first set up the action:
+The directory structure now will look like:
+
+```
+contact_us_app
+├── packages
+│   ├── .env
+│   └── contact
+│       ├── create-table.js
+│       ├── notify.js
+│       ├── submit.js
+│       └── write.js
+└── web
+└── index.html
+```
+
+Inside the `.env` file put this content:
+
+```env
+NOTIFICATION_URL=<url>
+```
+
+Replace `<url>` with the url received from webhook.site.
+
+Now deploy everything as usual, giving:
 
 ```bash
-ops action create contact/notify packages/contact/notify.js -p notifications <your webhook>
+ops ide deploy
 ```
-You should see this output:
-```shell
-ok: created action contact/notify
-```
-
-We are already setting the `notifications` parameter on action creation,
-which is the webhook. The other one is the text that the submit action
-will give in input at every invocation.
 
 ### Creating Another Action Sequence
 
-We have developed an action that can send a Slack message as a
+We have developed an action that can send a message as a
 standalone action, but we designed it to take the output of the submit
 action and return it as is. Time to extend the previous sequence!
 
@@ -163,11 +200,11 @@ ops url contact/submit-notify
 And update the action inside the file `web/index.html`:
 
 ```html
-<form method="POST" action="/api/v1/web/openserverless/contact/submit-notify"
+<form method="POST" action="/api/v1/web/opstutorial/contact/submit-notify"
     enctype="application/x-www-form-urlencoded">
 ```
 
-Don’t forget to re-upload the web folder with `ops util upload web/`.
+Don’t forget to re-publish everything with `ops ide deploy`.
 
 Now try to fill out the form again and press send! It will execute the sequence 
 and you will receive the message piped from action `/contact/submit-write` to 
